@@ -18,12 +18,14 @@ import javax.swing.JScrollPane;
 @SuppressWarnings("serial")
 public class TreeShowSelector extends JPanel {
 
-	PythonIViewInterface iViewInterface;
-	Function<Show, Boolean> filter;
+	private PythonIViewInterface iViewInterface;
+	private Function<Show, Boolean> filter;
+	private String filterName;
 
-	public TreeShowSelector(PythonIViewInterface iViewInterface, Function<Show, Boolean> filter) {
+	public TreeShowSelector(PythonIViewInterface iViewInterface, Function<Show, Boolean> filter, String filterName) {
 		this.iViewInterface = iViewInterface;
 		this.filter = filter;
+		this.filterName = filterName;
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -34,7 +36,7 @@ public class TreeShowSelector extends JPanel {
 	}
 
 	private TreeNode generateTree() {
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(filterName);
 		Show[] shows = iViewInterface.getIndexSafe();
 		for (int i = 0; i < shows.length; i++) {
 			DefaultMutableTreeNode showNode = new DefaultMutableTreeNode(shows[i].getSimpleString());

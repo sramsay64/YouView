@@ -1,13 +1,14 @@
 package com.openthid.youview.gui;
 
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.alee.laf.WebLookAndFeel;
 import com.openthid.youview.PythonIViewInterface;
-
-import java.awt.BorderLayout;
 
 public class MainWindow {
 
@@ -44,11 +45,22 @@ public class MainWindow {
 	private void initialize() {
 		iViewInterface = new PythonIViewInterface();
 		
+		WebLookAndFeel.install();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{448, 0};
+		gridBagLayout.rowHeights = new int[]{274, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		frame.getContentPane().setLayout(gridBagLayout);
 		
-		JPanel panel = new TreeShowSelector(iViewInterface, null);
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		JPanel panel = new TreeShowSelector(iViewInterface, null, "No Filter");
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 0;
+		gbc_panel.gridy = 0;
+		frame.getContentPane().add(panel, gbc_panel);
 	}
 }

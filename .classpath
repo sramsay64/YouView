@@ -9,5 +9,10 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/YouView/libs/gson-2.5-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libs/weblaf-complete-1.29.jar" sourcepath="libs/weblaf-src-1.29.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/YouView/libs/weblaf-javadoc-1.29.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
