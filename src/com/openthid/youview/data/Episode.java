@@ -20,6 +20,8 @@ public class Episode {
 	private String thumb; // TODO Add Thumbnail downloading
 	private int id;
 
+	private Rating ratingX;
+
 	public String getUrl() {
 		return url;
 	}
@@ -32,8 +34,11 @@ public class Episode {
 		return title;
 	}
 
-	public String getRating() {
-		return rating;
+	public Rating getRating() {
+		if (ratingX == null) {
+			ratingX = Rating.fromString(rating);
+		}
+		return ratingX;
 	}
 
 	public String getDescription() {

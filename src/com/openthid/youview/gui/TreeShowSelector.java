@@ -1,50 +1,57 @@
 package com.openthid.youview.gui;
 
-import java.util.function.Function;
-
-import javax.swing.JPanel;
-
-import com.openthid.youview.PythonIViewInterface;
-import com.openthid.youview.data.Show;
-
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-
 import java.awt.BorderLayout;
 
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import com.alee.laf.tree.WebTree;
+import com.openthid.youview.PythonIViewInterface;
+import com.openthid.youview.data.Show;
 
 @SuppressWarnings("serial")
 public class TreeShowSelector extends JPanel {
 
 	private PythonIViewInterface iViewInterface;
-	private Function<Show, Boolean> filter;
-	private String filterName;
+	private Filter filter;
+	private IconTreeNode rootNode;
 
-	public TreeShowSelector(PythonIViewInterface iViewInterface, Function<Show, Boolean> filter, String filterName) {
+	public TreeShowSelector(PythonIViewInterface iViewInterface, Filter filter) {
 		this.iViewInterface = iViewInterface;
 		this.filter = filter;
-		this.filterName = filterName;
+		this.rootNode  = new IconTreeNode(filter.getName(), MainWindow.icon("zoom.png"));
+		
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane);
-		
-		JTree tree = new JTree(generateTree());
+
+		WebTree<DefaultMutableTreeNode> tree = new WebTree<DefaultMutableTreeNode>(generateTree());
+		tree.setCellRenderer(new IconTreeCellRenderer());
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+				if (e.getPath().getPathCount() == 1) {
+					System.out.println("TODO: filter change gui");
+				}
+			}
+		});
 		scrollPane.setViewportView(tree);
 	}
 
-	private TreeNode generateTree() {
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(filterName);
+	private IconTreeNode generateTree() {
 		Show[] shows = iViewInterface.getIndexSafe();
 		for (int i = 0; i < shows.length; i++) {
-			DefaultMutableTreeNode showNode = new DefaultMutableTreeNode(shows[i].getSimpleString());
-			for (int j = 0; j < shows[i].getItems().length; j++) {
-				DefaultMutableTreeNode episodeNode = new DefaultMutableTreeNode(shows[i].getItems()[j].getSimpleString());
-				showNode.add(episodeNode);
+			if (filter.include(shows[i])) {
+				IconTreeNode showNode = new IconTreeNode(shows[i].getSimpleString(), MainWindow.icon("film.png"));
+				for (int j = 0; j < shows[i].getItems().length; j++) {
+					IconTreeNode episodeNode = new IconTreeNode(shows[i].getItems()[j].getSimpleString(), MainWindow.icon("film.png"));
+					showNode.add(episodeNode);
+				}
+				rootNode.add(showNode);
 			}
-			rootNode.add(showNode);
 		}
 		return rootNode;
 	}

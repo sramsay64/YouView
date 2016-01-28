@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public class Show {
 	private String title;
-	private String series = null;
+	private String series;
 	private Episode[] items;
 	private int id;
 
