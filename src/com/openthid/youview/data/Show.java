@@ -30,13 +30,13 @@ public class Show {
 		return id;
 	}
 
-	@Override
-	public String toString() {
+	public String toComplexString() {
 		return "Show [title=" + title + ", series=" + series + ", items="
 				+ Arrays.toString(items) + ", id=" + id + "]";
 	}
 
-	public String getSimpleString() {
+	@Override
+	public String toString() {
 		StringBuilder builder = new StringBuilder(title);
 		if (getSeries() != null) {
 			builder.append(" - Series ");

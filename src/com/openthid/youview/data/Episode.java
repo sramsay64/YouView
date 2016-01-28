@@ -83,15 +83,15 @@ public class Episode {
 
 	@Override
 	public String toString() {
+		return getTitle();
+	}
+
+	public String toCompleteString() {
 		return "Episode [url=" + url + ", warning=" + warning + ", title="
 				+ title + ", rating=" + rating + ", description=" + description
 				+ ", size=" + size + ", expires=" + expires + ", category="
 				+ category + ", duration=" + duration + ", livestream="
 				+ livestream + ", home=" + home + ", date=" + date + ", thumb="
 				+ thumb + ", id=" + id + "]";
-	}
-
-	public String getSimpleString() {
-		return getTitle();
 	}
 }
