@@ -1,4 +1,4 @@
-package com.openthid.youview.gui;
+package com.openthid.youview.gui.selector;
 
 import javax.swing.JPanel;
 
@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 
 import com.openthid.youview.data.Genre;
 import com.openthid.youview.data.Rating;
+import com.openthid.youview.gui.Icons;
 
 import javax.swing.JCheckBox;
 

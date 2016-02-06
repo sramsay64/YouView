@@ -18,6 +18,9 @@ import javax.swing.event.TreeSelectionEvent;
 import com.alee.laf.WebLookAndFeel;
 import com.openthid.youview.PythonIViewInterface;
 import com.openthid.youview.data.Episode;
+import com.openthid.youview.gui.selector.Filter;
+import com.openthid.youview.gui.selector.IconTreeNode;
+import com.openthid.youview.gui.selector.TreeShowSelector;
 
 public class MainWindow {
 
@@ -112,7 +115,7 @@ public class MainWindow {
 		panelShows.add(btnDownload, gbc_btnDownload);
 		
 		JPanel panelDownloads = new JPanel();
-		tabbedPane.addTab("Downloads", null, panelDownloads, "View the progress of the downloads");
+		tabbedPane.addTab("Downloads", Icons.iconFullPath("/org/wikimedia/upload/Download.png"), panelDownloads, "View the progress of the downloads");
 	}
 
 	public void selectionChanged(TreeSelectionEvent e) {

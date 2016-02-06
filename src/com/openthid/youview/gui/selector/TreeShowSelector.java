@@ -1,4 +1,4 @@
-package com.openthid.youview.gui;
+package com.openthid.youview.gui.selector;
 
 import java.awt.BorderLayout;
 import java.util.Arrays;
@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.alee.laf.tree.WebTree;
 import com.openthid.youview.PythonIViewInterface;
+import com.openthid.youview.gui.Icons;
 
 @SuppressWarnings("serial")
 public class TreeShowSelector extends JPanel {

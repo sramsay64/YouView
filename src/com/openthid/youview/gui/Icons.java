@@ -30,6 +30,10 @@ public class Icons {
 		return new ImageIcon(MainWindow.class.getResource("/org/wikimedia/upload/" + rating + ".png"));
 	}
 
+	public static ImageIcon iconFullPath(String path)  {
+		return new ImageIcon(MainWindow.class.getResource(path));
+	}
+
 	public static ImageIcon icon(Episode episode) {//TODO Cache icons
 		return concatX(icon(episode.getGenre()), icon(episode.getRating()));
 	}

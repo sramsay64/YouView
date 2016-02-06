@@ -1,4 +1,4 @@
-package com.openthid.youview.gui;
+package com.openthid.youview.gui.selector;
 
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
