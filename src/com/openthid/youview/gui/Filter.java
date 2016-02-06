@@ -1,6 +1,9 @@
 package com.openthid.youview.gui;
 
+import java.util.Arrays;
+
 import com.openthid.youview.data.Episode;
+import com.openthid.youview.data.Genre;
 import com.openthid.youview.data.Rating;
 import com.openthid.youview.data.Show;
 
@@ -13,13 +16,19 @@ public class Filter {
 	/**
 	 * A filter that only allows G Rated content
 	 */
-	public static final Filter G_RATED = new Filter().setMaxRating(Rating.G);
+	public static final Filter G_RATED = new Filter();
 
-	private Rating maxRating;
-	private String showSearch;
-	private String episodeSearch;
-	private String episodeDescSearch;
+	private Rating maxRating = Rating.MA;
+	private String showSearch = "";
+	private String episodeSearch = "";
+	private String episodeDescSearch = "";
+	private boolean genreKidsAllowed = true;
+	private boolean genreNewsAllowed = true;
+	private boolean genreOtherAllowed = true;
 
+	/**
+	 * Never <code>null</code>
+	 */
 	public Rating getMaxRating() {
 		return maxRating;
 	}
@@ -34,6 +43,18 @@ public class Filter {
 
 	public String getEpisodeDescSearch() {
 		return episodeDescSearch;
+	}
+
+	public boolean isGenreKidsAllowed() {
+		return genreKidsAllowed;
+	}
+
+	public boolean isGenreNewsAllowed() {
+		return genreNewsAllowed;
+	}
+
+	public boolean isGenreOtherAllowed() {
+		return genreOtherAllowed;
 	}
 
 	public Filter setMaxRating(Rating maxRating) {
@@ -56,15 +77,29 @@ public class Filter {
 		return this;
 	}
 
+	public Filter setGenreKidsAllowed(boolean genreKidsAllowed) {
+		this.genreKidsAllowed = genreKidsAllowed;
+		return this;
+	}
+
+	public Filter setGenreNewsAllowed(boolean genreNewsAllowed) {
+		this.genreNewsAllowed = genreNewsAllowed;
+		return this;
+	}
+
+	public Filter setGenreOtherAllowed(boolean genreOtherAllowed) {
+		this.genreOtherAllowed = genreOtherAllowed;
+		return this;
+	}
+
 	/**
 	 * @param show The show to be tested
 	 * @return Whether or not the show should be included in the filtered list. If false then the show should be rejected
 	 */
 	public boolean include(Show show) {
 		boolean b = true;
-		if (showSearch != null) {
-			b &= show.getTitle().contains(showSearch);
-		}
+		b &= show.getTitle().contains(showSearch);
+		b &= Arrays.stream(show.getItems()).anyMatch(episode -> include(episode));
 		return b;
 	}
 
@@ -74,15 +109,12 @@ public class Filter {
 	 */
 	public boolean include(Episode episode) {
 		boolean b = true;
-		if (maxRating != null) {
-			b &= maxRating.canInclude(episode.getRating());
-		}
-		if (episodeSearch != null) {
-			b &= episode.getTitle().contains(episodeSearch);
-		}
-		if (episodeDescSearch != null) {
-			b &= episode.getDescription().contains(episodeDescSearch);
-		}
+		b &= maxRating.canInclude(episode.getRating());
+		b &= episode.getTitle().contains(episodeSearch);
+		b &= episode.getDescription().contains(episodeDescSearch);
+		b &= !(episode.getGenre() == Genre.KIDS && !genreKidsAllowed);
+		b &= !(episode.getGenre() == Genre.NEWS && !genreNewsAllowed);
+		b &= !(episode.getGenre() == Genre.OTHER && !genreOtherAllowed);
 		return b;
 	}
 
@@ -92,16 +124,16 @@ public class Filter {
 			name.append("MaxRating: ");
 			name.append(maxRating);
 		}
-		if (showSearch != null) {
-			name.append("showSearch: ");
+		if (showSearch != null && !showSearch.equals("")) {
+			name.append(" ShowSearch: ");
 			name.append(showSearch);
 		}
-		if (episodeSearch != null) {
-			name.append("episodeSearch: ");
+		if (episodeSearch != null && !episodeSearch.equals("")) {
+			name.append(" EpSearch: ");
 			name.append(episodeSearch);
 		}
-		if (episodeDescSearch != null) {
-			name.append("episodeDescSearch: ");
+		if (episodeDescSearch != null && !episodeDescSearch.equals("")) {
+			name.append(" DescSearch: ");
 			name.append(episodeDescSearch);
 		}
 		return name.toString();
@@ -110,15 +142,5 @@ public class Filter {
 	@Override
 	public String toString() {
 		return getName();
-	}
-
-	@Deprecated
-	@Override
-	public Filter clone() throws CloneNotSupportedException {
-		return new Filter()
-		.setMaxRating(getMaxRating())
-		.setShowSearch(getShowSearch())
-		.setEpisodeSearch(getEpisodeSearch())
-		.setEpisodeDescSearch(getEpisodeDescSearch());
 	}
 }

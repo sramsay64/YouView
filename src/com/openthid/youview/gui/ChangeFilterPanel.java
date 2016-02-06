@@ -8,11 +8,15 @@ import javax.swing.JComboBox;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
+import com.openthid.youview.data.Genre;
 import com.openthid.youview.data.Rating;
+
+import javax.swing.JCheckBox;
 
 @SuppressWarnings("serial")
 public class ChangeFilterPanel extends JPanel {
@@ -21,7 +25,10 @@ public class ChangeFilterPanel extends JPanel {
 	private JComboBox<Rating> comboBox;
 	private JTextField txtShowSearch;
 	private JTextField txtEpisodeSearch;
-	private JTextField txtEpisodeDescSearch;
+	private JTextField txtDescriptionSearch;
+	private JCheckBox chckbxKids;
+	private JCheckBox chckbxNews;
+	private JCheckBox chckbxOther;
 
 	/**
 	 * Create the panel.
@@ -30,10 +37,10 @@ public class ChangeFilterPanel extends JPanel {
 		this.old = old;
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JLabel lblRating = new JLabel("Rating");
@@ -48,7 +55,9 @@ public class ChangeFilterPanel extends JPanel {
 		for (Rating rating: Rating.values()) {
 			comboBox.addItem(rating);
 		}
+		comboBox.setSelectedItem(old.getMaxRating());
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.gridwidth = 4;
 		gbc_comboBox.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.gridx = 1;
@@ -64,8 +73,11 @@ public class ChangeFilterPanel extends JPanel {
 		add(lblShowSearch, gbc_lblShowSearch);
 		
 		txtShowSearch = new JTextField();
-		txtShowSearch.setText("Show Search");
+		txtShowSearch.setText(old.getShowSearch());
+		txtShowSearch.setName("Show Search");
+		txtShowSearch.setToolTipText("Show Search");
 		GridBagConstraints gbc_txtShowSearch = new GridBagConstraints();
+		gbc_txtShowSearch.gridwidth = 4;
 		gbc_txtShowSearch.insets = new Insets(0, 0, 5, 0);
 		gbc_txtShowSearch.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtShowSearch.gridx = 1;
@@ -82,8 +94,11 @@ public class ChangeFilterPanel extends JPanel {
 		add(lblEpisodeSearch, gbc_lblEpisodeSearch);
 		
 		txtEpisodeSearch = new JTextField();
-		txtEpisodeSearch.setText("Episode Search");
+		txtEpisodeSearch.setText(old.getEpisodeSearch());
+		txtEpisodeSearch.setName("Episode Search");
+		txtEpisodeSearch.setToolTipText("Episode Search");
 		GridBagConstraints gbc_txtEpisodeSearch = new GridBagConstraints();
+		gbc_txtEpisodeSearch.gridwidth = 4;
 		gbc_txtEpisodeSearch.insets = new Insets(0, 0, 5, 0);
 		gbc_txtEpisodeSearch.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEpisodeSearch.gridx = 1;
@@ -91,22 +106,55 @@ public class ChangeFilterPanel extends JPanel {
 		add(txtEpisodeSearch, gbc_txtEpisodeSearch);
 		txtEpisodeSearch.setColumns(10);
 		
-		JLabel lblEpisodeDescriptionSearch = new JLabel("Episode Description Search");
-		GridBagConstraints gbc_lblEpisodeDescriptionSearch = new GridBagConstraints();
-		gbc_lblEpisodeDescriptionSearch.anchor = GridBagConstraints.EAST;
-		gbc_lblEpisodeDescriptionSearch.insets = new Insets(0, 0, 0, 5);
-		gbc_lblEpisodeDescriptionSearch.gridx = 0;
-		gbc_lblEpisodeDescriptionSearch.gridy = 3;
-		add(lblEpisodeDescriptionSearch, gbc_lblEpisodeDescriptionSearch);
+		JLabel lblDescriptionSearch = new JLabel("Description Search");
+		GridBagConstraints gbc_lblDescriptionSearch = new GridBagConstraints();
+		gbc_lblDescriptionSearch.anchor = GridBagConstraints.EAST;
+		gbc_lblDescriptionSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDescriptionSearch.gridx = 0;
+		gbc_lblDescriptionSearch.gridy = 3;
+		add(lblDescriptionSearch, gbc_lblDescriptionSearch);
 		
-		txtEpisodeDescSearch = new JTextField();
-		txtEpisodeDescSearch.setText("Episode Description Search");
-		GridBagConstraints gbc_txtEpisodeDescSearch = new GridBagConstraints();
-		gbc_txtEpisodeDescSearch.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtEpisodeDescSearch.gridx = 1;
-		gbc_txtEpisodeDescSearch.gridy = 3;
-		add(txtEpisodeDescSearch, gbc_txtEpisodeDescSearch);
-		txtEpisodeDescSearch.setColumns(10);
+		txtDescriptionSearch = new JTextField();
+		txtDescriptionSearch.setText(old.getEpisodeDescSearch());
+		txtDescriptionSearch.setName("Description Search");
+		txtDescriptionSearch.setToolTipText("Episode Description Search");
+		GridBagConstraints gbc_txtDescriptionSearch = new GridBagConstraints();
+		gbc_txtDescriptionSearch.gridwidth = 4;
+		gbc_txtDescriptionSearch.insets = new Insets(0, 0, 5, 0);
+		gbc_txtDescriptionSearch.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDescriptionSearch.gridx = 1;
+		gbc_txtDescriptionSearch.gridy = 3;
+		add(txtDescriptionSearch, gbc_txtDescriptionSearch);
+		txtDescriptionSearch.setColumns(10);
+		
+		JLabel lblGenres = new JLabel("Allowed Genres");
+		GridBagConstraints gbc_lblGenres = new GridBagConstraints();
+		gbc_lblGenres.anchor = GridBagConstraints.EAST;
+		gbc_lblGenres.insets = new Insets(0, 0, 5, 5);
+		gbc_lblGenres.gridx = 0;
+		gbc_lblGenres.gridy = 4;
+		add(lblGenres, gbc_lblGenres);
+		
+		chckbxKids = new JCheckBox("Kids", Icons.icon(Genre.KIDS), old.isGenreKidsAllowed());
+		GridBagConstraints gbc_chckbxKids = new GridBagConstraints();
+		gbc_chckbxKids.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxKids.gridx = 1;
+		gbc_chckbxKids.gridy = 4;
+		add(chckbxKids, gbc_chckbxKids);
+		
+		chckbxNews = new JCheckBox("News", Icons.icon(Genre.NEWS), old.isGenreNewsAllowed());
+		GridBagConstraints gbc_chckbxNews = new GridBagConstraints();
+		gbc_chckbxNews.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNews.gridx = 2;
+		gbc_chckbxNews.gridy = 4;
+		add(chckbxNews, gbc_chckbxNews);
+		
+		chckbxOther = new JCheckBox("Other", Icons.icon(Genre.OTHER), old.isGenreOtherAllowed());
+		GridBagConstraints gbc_chckbxOther = new GridBagConstraints();
+		gbc_chckbxOther.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxOther.gridx = 3;
+		gbc_chckbxOther.gridy = 4;
+		add(chckbxOther, gbc_chckbxOther);
 	}
 
 	public Filter getOld() {
@@ -118,6 +166,17 @@ public class ChangeFilterPanel extends JPanel {
 		.setMaxRating((Rating) comboBox.getSelectedItem())
 		.setShowSearch(txtShowSearch.getText())
 		.setEpisodeSearch(txtEpisodeSearch.getText())
-		.setEpisodeDescSearch(txtEpisodeDescSearch.getText());
+		.setEpisodeDescSearch(txtDescriptionSearch.getText())
+		.setGenreKidsAllowed(chckbxKids.isSelected())
+		.setGenreNewsAllowed(chckbxNews.isSelected())
+		.setGenreOtherAllowed(chckbxOther.isSelected());
+	}
+
+	public Genre[] getAllowedGenres() {
+		ArrayList<Genre> genres = new ArrayList<Genre>(3);
+		if (chckbxKids.isSelected()) genres.add(Genre.KIDS);
+		if (chckbxNews.isSelected()) genres.add(Genre.NEWS);
+		if (chckbxOther.isSelected()) genres.add(Genre.OTHER);
+		return genres.toArray(new Genre[genres.size()]);
 	}
 }

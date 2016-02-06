@@ -8,14 +8,14 @@ public enum Rating {
 	MA;
 
 	/**
-	 * Like {@link Enum}'s <code>valueOf</code> but errors evaluate to <code>Uncla</code>
+	 * Like {@link Enum}'s <code>valueOf</code> but errors evaluate to <code>UNCLASIFIED</code>
 	 * @param rating to be decoded
 	 * @return Rating
 	 */
 	public static Rating fromString(String rating) {
 		try {
 			return valueOf(rating);
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException | NullPointerException e) {
 			return UNCLASIFIED;
 		}
 	}

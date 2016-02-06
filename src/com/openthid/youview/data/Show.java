@@ -14,18 +14,22 @@ public class Show {
 	private Episode[] items;
 	private int id;
 
+	@Given
 	public String getTitle() {
 		return title;
 	}
 
+	@Given
 	public String getSeries() {
 		return series;
 	}
 
+	@Given
 	public Episode[] getItems() {
 		return items;
 	}
 
+	@Given
 	public int getId() {
 		return id;
 	}

@@ -1,6 +1,7 @@
 package com.openthid.youview;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -8,12 +9,13 @@ import okhttp3.Response;
 
 import com.google.gson.Gson;
 import com.openthid.youview.data.Download;
+import com.openthid.youview.data.Episode;
 import com.openthid.youview.data.Show;
 
 public class PythonIViewInterface {
 
-	private OkHttpClient httpClient;
 	private Gson gson;
+	private OkHttpClient httpClient;
 	private String baseURL;
 
 	public PythonIViewInterface() {
@@ -27,7 +29,9 @@ public class PythonIViewInterface {
 	}
 
 	public Show[] getIndex() throws IOException {
-		return getT("index", Show[].class);
+		Show[] shows = getT("index", Show[].class);
+		Arrays.stream(shows).forEach(show -> Arrays.stream(show.getItems()).forEach(episode -> episode.setShow(show)));
+		return shows;
 	}
 
 	public Show[] getIndexSafe() {
@@ -40,6 +44,17 @@ public class PythonIViewInterface {
 
 	public Download[] getDownloads() throws IOException {
 		return getT("listDownloads", Download[].class);
+	}
+
+	public void addDownload(Show show, Episode episode, String folder) throws IOException {
+		Request request = new Request.Builder()
+			.url(baseURL
+					+ "download?showId=" + show.getId()
+					+ "&epId=" + episode.getId()
+					+ "&folder=" + folder
+				)
+			.build();
+		httpClient.newCall(request).execute();
 	}
 
 	private <T> T getT(String url, Class<T> classOfT) throws IOException {	
