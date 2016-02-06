@@ -44,7 +44,7 @@ public class ChangeFilterPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		JLabel lblRating = new JLabel("Rating");
+		JLabel lblRating = new JLabel("Max Rating");
 		GridBagConstraints gbc_lblRating = new GridBagConstraints();
 		gbc_lblRating.insets = new Insets(0, 0, 5, 5);
 		gbc_lblRating.anchor = GridBagConstraints.EAST;
